@@ -1,3 +1,5 @@
+## EZrentrez: functions to handle large queries to NCBI nuccore
+
 require(rentrez)
 require(tidyverse)
 require(Biostrings)
@@ -23,7 +25,7 @@ get_ncbi_ids <- function(searchexp){
 
 #' @title get_Esummaries
 #'
-#' @details A wrapper around entrez_summary to get large volumes of summary records for a given search expression in 500 records/query steps.
+#' @details subroutine run by get_Esummary_df(); wrapper for entrez_summary() to get large volumes of summary records for a given search expression in 500 records/query steps.
 #' 
 #' @param web_history a web history token returned by entrez_search
 #' @param id.count the total number of available records from entrez_search
@@ -91,8 +93,7 @@ get_ESummary_df <- function(searchexp, apikey){
 #' get_Efasta
 #' 
 #' gets all sequences from all search results in fasta format, using webhistory from get_ncbi_ids(searchexp)
-#' @param webhist webhistory object from rentrez::entrez_search() or from the function get_ncbi_ids()
-#' @param id.count search$count integer from rentrez::entrez_search() or from the function get_ncbi_ids()
+#' @param searchexp the search expression that you want all fasta records for
 #' @param apikey your ncbi apikey for rapid downloads
 #'
 #' @return returns a dataframe with columns for 'accession + title' and sequence
@@ -106,7 +107,10 @@ get_ESummary_df <- function(searchexp, apikey){
 #' id.count <- apicomplexa.search$count
 #' apicomplexa.fasta <- get_Efasta(webhist, id.count, apikey)
 #' 
-get_Efasta <- function(webhist, id.count, apikey) {
+get_Efasta <- function(searchexp, apikey) {
+  basic_search <- get_ncbi_ids(searchexp)
+  webhist <- basic_search$web_history
+  id.count <- basic_search$count
   message(paste('Fetching', id.count, 'fasta records'))
   fasta <- ''
   for (i in seq(1, id.count, 500)){
@@ -117,7 +121,7 @@ get_Efasta <- function(webhist, id.count, apikey) {
     fasta <- paste0(fasta, temp)
   }
   print('100%')
-  message('Victory! You downloaded those seqs like a champ :)')
+  message('Victory! You downloaded those seqs like a champ :)\n\nTidying data....')
   # split fasta into lines and write a temp file
   write(fasta, "temp.fasta", sep = "\n")
   # read lines as a DNAStringSet object using Biostrings package
@@ -125,7 +129,8 @@ get_Efasta <- function(webhist, id.count, apikey) {
   # delete temp file
   file.remove('temp.fasta')
   # arrange fasta into df
-  fasta.df <- data.frame(title = names(fasta), seqs = paste(fasta))
+  fasta.df <- data.frame(title = names(fasta), seq = paste(fasta))
+  message('Done.')
   return(fasta.df)
 }
 
