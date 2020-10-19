@@ -1,13 +1,5 @@
 library(rentrez)
-library(seqinr)
-library(Biostrings)
 library(tidyverse)
-
-## NCBI ----
-
-# ncbi api key
-apikey <- 'b15a151c3a183199be1617b6de4f030ade08' 
-
 
 #' @title get_ncbi_ids
 #'
@@ -28,9 +20,9 @@ get_ncbi_ids <- function(searchexp){
 }
 
 
-#' get_Esmmaries
+#' @title get_Esmmaries
 #'
-#' A wrapper around entrez_summary to get large volumes of summary records for a given search expression in 500 records/query steps.
+#' @details A wrapper around entrez_summary to get large volumes of summary records for a given search expression in 500 records/query steps.
 #' 
 #' @param web_history a web history token returned by entrez_search
 #' @param id.count the total number of available records from entrez_search
@@ -59,15 +51,16 @@ get_Esummaries <- function(web_history, id.count, apikey) {
   return(Esummary_list)
 }
 
-#' get_ESummary_df
+#' @title get_ESummary_df
 #'
-#' A wrapper for entrez_search and entrez_summary that takes your search expression, gets all the summaries, then takes the list of sumaries and makes it a tidy tibble.
+#' @details A wrapper for rentrez::entrez_search and rentrez::entrez_summary that takes your search expression, gets all the summaries, then takes the list of summaries and returns it as a tidy tibble. You'll need to provide your own api key from NCBI.
 #' @param searchexp the search expression for ncbi
 #' @param apikey your apikey from ncbi
 #'
 #' @return a tibble of all summary records available for given search expression
 #'
 #' @examples
+#' apikey <- 'b1a183199be1617b6de4f030ade08' # use your own apikey
 #' searchexp <- '18S AND apicomplexa[ORGN] AND 0:10000[SLEN]) NOT (genome[TITL])'
 #' summary.df <- get_ESummary_df(searchexp, apikey)
 
@@ -86,5 +79,52 @@ get_ESummary_df <- function(searchexp, apikey){
   return(df)
   }
 
-searchexp <- '18S AND apicomplexa[ORGN] AND 0:10000[SLEN]) NOT (genome[TITL])'
-summary.df <- get_ESummary_df(searchexp, apikey)
+# ncbi api key, obviously you'll need to put your own (don't copy this fake one)
+# apikey <- 'b1a183199be1617b6de4f030ade08' 
+# searchexp <- '18S AND apicomplexa[ORGN] AND 0:10000[SLEN]) NOT (genome[TITL])'
+# summary.df <- get_ESummary_df(searchexp, apikey)
+# 
+
+
+
+#' get_Efasta
+#' 
+#' gets all sequences from all search results in fasta format, using webhistory from get_ncbi_ids(searchexp)
+#' @param webhist webhistory object from rentrez::entrez_search() or from the function get_ncbi_ids()
+#' @param id.count search$count integer from rentrez::entrez_search() or from the function get_ncbi_ids()
+#' @param apikey your ncbi apikey for rapid downloads
+#'
+#' @return returns a dataframe with columns for 'accession + title' and sequence
+#' 
+#'
+#' @examples
+#' # do initial search
+#' apicomplexa.search <- get_ncbi_ids(searchexp)
+#' # keep the web history link and records count
+#' webhist <- apicomplexa.search$web_history
+#' id.count <- apicomplexa.search$count
+#' apicomplexa.fasta <- get_Efasta(webhist, id.count, apikey)
+#' 
+get_Efasta <- function(webhist, id.count, apikey) {
+  message(paste('Fetching', id.count, 'fasta records'))
+  fasta <- ''
+  for (i in seq(1, id.count, 500)){
+    print(paste0(round(i/id.count*100), '%'))
+    temp <- entrez_fetch(db = "nuccore", web_history = webhist,
+                         retstart = i-1, retmax=500, api_key = apikey,
+                         rettype = 'fasta')
+    fasta <- paste0(fasta, temp)
+  }
+  print('100%')
+  message('Victory! You downloaded those seqs like a champ :)')
+  # split fasta into lines and write a temp file
+  write(fasta, "temp.fasta", sep = "\n")
+  # read lines as a DNAStringSet object using Biostrings package
+  fasta <- Biostrings::readDNAStringSet("temp.fasta")
+  # delete temp file
+  file.remove('temp.fasta')
+  # arrange fasta into df
+  fasta.df <- data.frame(title = names(fasta), seqs = paste(fasta))
+  return(fasta.df)
+}
+
