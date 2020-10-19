@@ -1,5 +1,6 @@
-library(rentrez)
-library(tidyverse)
+require(rentrez)
+require(tidyverse)
+require(Biostrings)
 
 #' @title get_ncbi_ids
 #'
