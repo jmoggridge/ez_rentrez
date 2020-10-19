@@ -4,7 +4,7 @@ require(Biostrings)
 
 #' @title get_ncbi_ids
 #'
-#' @param searchexp the search expression string with booleans, etc.
+#' @param searchexp the search expression string with terms, booleans, etc.
 #'
 #' @return the search results for the given expression with all available ids, and a webhistory token for entrez_summary or entrez_fetch
 get_ncbi_ids <- function(searchexp){
