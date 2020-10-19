@@ -20,7 +20,7 @@ get_ncbi_ids <- function(searchexp){
 }
 
 
-#' @title get_Esmmaries
+#' @title get_Esummaries
 #'
 #' @details A wrapper around entrez_summary to get large volumes of summary records for a given search expression in 500 records/query steps.
 #' 
