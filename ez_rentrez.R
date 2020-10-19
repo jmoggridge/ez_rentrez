@@ -11,7 +11,7 @@ get_ncbi_ids <- function(searchexp){
   
   # find out how many ids available from 1st search
   Esearch <- entrez_search(db = "nuccore", term = searchexp, retmax = 100)
-  # use 'count' from first search to get all ids; get webenv with
+  # use 'count' from first search to get all ids; get webenv with 'use_history = TRUE'
   Esearch2 <- entrez_search(db = "nuccore", 
                             term = searchexp, retmax = Esearch$count,
                             use_history = TRUE)
