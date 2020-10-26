@@ -14,7 +14,7 @@ You'll need to put your own key here
 
 `apikey <- 'never1gonna2give3you4up' `
 
-#### set your search expression
+#### Set your search expression
 
 Use the ncbi browser online to refine your search; there is a window that shows you the search string that you can paste for `searchexp` below.  
 
@@ -26,10 +26,10 @@ Use the ncbi browser online to refine your search; there is a window that shows 
 
 `apicomplexa.search <- get_ncbi_ids(searchexp)`
 
-#### download all summaries, get a df
+#### Download all summaries, get a dataframe of summary records (sequence-associated data)
 
 `apicomplexa.summary.df <- get_ESummary_df(searchexp, apikey)`
 
-#### download all fastas, get a df
+#### Download all fastas, get a dataframe of sequence records (title, sequence)
 
 `apicomplexa.fasta.df <- get_Efasta(searchexp, apikey)`
