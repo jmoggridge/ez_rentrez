@@ -1,6 +1,6 @@
 # *ez_rentrez*
 
-Convenience functions for performing large queries using the Rentrez package. Get summaries and sequences from the NCBI nucleotide (aka nuccore) database. For the functions to work, you will need to [register an account with NCBI](https://www.ncbi.nlm.nih.gov/account/register/) and [request an api key](https://ncbiinsights.ncbi.nlm.nih.gov/2017/11/02/new-api-keys-for-the-e-utilities/#:~:text=To%20create%20the%20key%2C%20go,and%20copy%20the%20resulting%20key.) for rapid downloads. The dependancies of this code are `tidyverse`, `rentrez`, and `Biostrings`
+For large queries using the Rentrez package. Get summaries and sequences from the NCBI nucleotide (aka nuccore) database. For the functions to work, you will need to [register an account with NCBI](https://www.ncbi.nlm.nih.gov/account/register/) and [request an api key](https://ncbiinsights.ncbi.nlm.nih.gov/2017/11/02/new-api-keys-for-the-e-utilities/#:~:text=To%20create%20the%20key%2C%20go,and%20copy%20the%20resulting%20key.) for rapid downloads. The dependancies of this code are `tidyverse`, `rentrez`, and `Biostrings`
 
 #### Read the functions from the script into your environment
 
