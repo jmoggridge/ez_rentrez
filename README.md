@@ -1,6 +1,6 @@
 # *ez_rentrez*
 
-Simple functions for retreiving larger queries for summaries and sequences from the NCBI nucleotide database using the Rentrez package. You'll need to first [register an account with NCBI](https://www.ncbi.nlm.nih.gov/account/register/) and [request an api key](https://ncbiinsights.ncbi.nlm.nih.gov/2017/11/02/new-api-keys-for-the-e-utilities/#:~:text=To%20create%20the%20key%2C%20go,and%20copy%20the%20resulting%20key.) to allow rapid downloads; this solves the issue of API requests being sent too quickly for unregistered users (NCBI limits the rate of requests from unregistered users). The dependancies of this code are `tidyverse`, `rentrez`, and `Biostrings`
+Simple functions for retreiving larger queries for summaries and sequences from the NCBI nucleotide database using the Rentrez package. You'll need to first [register an account with NCBI](https://www.ncbi.nlm.nih.gov/account/register/) and [request an api key](https://ncbiinsights.ncbi.nlm.nih.gov/2017/11/02/new-api-keys-for-the-e-utilities/#:~:text=To%20create%20the%20key%2C%20go,and%20copy%20the%20resulting%20key.) to allow rapid downloads; this solves the issue of queries being sent too quickly for unregistered users (a frequent cause of errors if seeking large amounts of records). The dependancies of this code are `tidyverse`, `rentrez`, and `Biostrings`
 
 #### Read the functions from the script into your environment
 
