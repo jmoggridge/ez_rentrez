@@ -83,7 +83,7 @@ get_ESummary_df <- function(searchexp, apikey){
   }
 
 # ncbi api key, obviously you'll need to put your own (don't copy this fake one)
-# apikey <- 'b1a183199be1617b6de4f030ade08' 
+# apikey <- '12345' 
 # searchexp <- '18S AND apicomplexa[ORGN] AND 0:10000[SLEN]) NOT (genome[TITL])'
 # summary.df <- get_ESummary_df(searchexp, apikey)
 # 
